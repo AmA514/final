@@ -1,0 +1,31 @@
+image=imread('test6.jpg');
+i1=image(:,:,1);
+BW=edge(i1,'sobel');
+[H,T,R] = hough(BW);
+RO=edge(i1,'roberts');
+PR=edge(i1,'prewitt');
+P=houghpeaks(H,5);
+lines=houghlines(BW,T,R,P);
+
+figure(1);
+subplot(221)
+imshow(i1);
+title('origin');
+subplot(222)
+imshow(BW);
+title('sobel');
+subplot(223)
+imshow(RO);
+title('roberts');
+subplot(224)
+imshow(PR);
+title('prewitt');
+figure(2);
+imshow(BW),hold on;
+for k = 1:length(lines)
+xy = [lines(k).point1; lines(k).point2];
+ plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');%画出线段
+plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');%起点
+plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');%终点
+end
+
